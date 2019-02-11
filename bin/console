@@ -1,0 +1,13 @@
+#!/bin/bash
+
+set -eo pipefail
+
+kubectl config use-context auth
+
+echo "Finding pod for -- $1 "
+
+POD_NAME=$(kubectl get pods  --selector app=$1 -o jsonpath={.items[0].metadata.name})
+
+echo "Attempt to connect to -- $POD_NAME"
+
+kubectl --namespace=default exec -ti $POD_NAME /bin/bash
